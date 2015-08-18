@@ -1,14 +1,14 @@
-*  A Tic Tac Toe game
+# A Tic Tac Toe game
 
 This game can be played against another human opponent of against the computer. When playing against the computer you can play in 'dumb' or 'unbeatable' mode.
 
-** Playing against another human opponent.
+## Playing against another human opponent.
 When playing against another human opponent each player takes turn clicking on a blank square until either a win or a draw is reached.
 
-** Playing against 'dumb' computer.
+## Playing against 'dumb' computer.
 In 'dumb' computer mode the computer uses a simmple recursive algorythm to look ahead from each move possibility. 
 
-** Playing against 'unbeatable' computer.
+## Playing against 'unbeatable' computer.
 In dumb computer mode the omputer follows these steps as seen on [https://en.wikipedia.org/wiki/Tic-tac-toe]. 
 A algorythm plays a perfect tic-tac-toe game by choosing the move with the highest priority in the following table.
 
