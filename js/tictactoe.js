@@ -5,6 +5,16 @@ ___________.__         ___________               ___________
   |    |   |  \  \___    |    |   / __ \\  \___    |    |(  <_> )  ___/ 
   |____|   |__|\___  >   |____|  (____  /\___  >   |____| \____/ \___  >
                    \/                 \/     \/                      \/ 
+
+Throughout this code a board is represented as a single dimention array of length 9.
+Like so:
+
+    0 | 1 | 2
+    ---------
+    3 | 4 | 5
+    ---------
+    6 | 7 | 8
+
 */
 
 var turn = -1;                                                          // Human always goes first with an X
@@ -232,12 +242,12 @@ var perfectMove = function(board) {
     }
 
     // 4. Option1. Special case. 
-    // prevent double fork by forcing opponent into defending
+    // circumvent double fork by forcing opponent into defending
     if (moves.length === 6) {
-        if (board[0] === "X" && board[8] === "X") {
+        if (board[0] === "X" && board[8] === "X" && board[4] === "O") {
             return 1;
         }
-        if (board[2] === "X" && board[6] === "X") {
+        if (board[2] === "X" && board[6] === "X" && board[4] === "O") {
             return 7;
         }
     }
