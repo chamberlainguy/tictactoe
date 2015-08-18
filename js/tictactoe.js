@@ -17,6 +17,7 @@ var makeBoard = function (){
 }
 
 var move = function (square){
+
     if (square.value == ""){
     	if (turn === -1) {
     		square.value = "X";
@@ -233,10 +234,10 @@ var perfectMove = function(board) {
     // 4. Option1. Special case. 
     // prevent double fork by forcing opponent into defending
     if (moves.length === 6) {
-        if (board[0] === "X" || board[8] === "X") {
+        if (board[0] === "X" && board[8] === "X") {
             return 1;
         }
-        if (board[2] === "X" || board[6] === "X") {
+        if (board[2] === "X" && board[6] === "X") {
             return 7;
         }
     }
