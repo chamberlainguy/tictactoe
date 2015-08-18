@@ -1,11 +1,11 @@
+    
 
-
-var turn = -1;  // Human always goes first with an X
+var turn = -1;                                                          // Human always goes first with an X
 var theBoard;
 
 var makeBoard = function (){
     var b = document.board;
-    theBoard = [b.b0,b.b1,b.b2,b.b3,b.b4,b.b5,b.b6,b.b7,b.b8];
+    theBoard = [b.b0,b.b1,b.b2,b.b3,b.b4,b.b5,b.b6,b.b7,b.b8];          // The board is an array of buttons
     newGame();
 }
 
@@ -17,19 +17,23 @@ var move = function (square){
     		square.value = "O";	
     	}
     	if (gameOver(square.accessKey)) return; 
-    	if (document.board.opponent.value === "Human") {
+    	if (document.board.opponent.value === "human") {
     		turn *= -1;
     	} else {
-    		var computerMove = lookAhead(anyOldBoard(), 1, 0);   	//	1=Computers Turn   0=Current Search Depth
+            if (document.board.opponent.value === "dumbAI") {
+    		    var computerMove = lookAhead(anyOldBoard(), 1, 0);   	//	1=Computers Turn   0=Current Search Depth
+            } else {
+                var computerMove = perfectMove(anyOldBoard());
+            }  
     		theBoard[computerMove].value = "O"
     		if ( gameOver ( computerMove ) ) return;
-    	}	
+    	}
     }
 }    
 
 var gameOver = function (lastMove) {
     if (isWinningMove(anyOldBoard(), lastMove)) {
-    	alert( theBoard[lastMove].value + "Wins!")
+    	alert( theBoard[lastMove].value + " Wins!")
     	newGame();	
     	return true
     } else if (isADraw(anyOldBoard())) {
@@ -44,7 +48,7 @@ var newGame = function () {
 	for ( var i=0; i < 9; i++) {
 		theBoard[i].value = ""
 	}
-	console.log("Playing against: " + document.board.opponent.value );
+    turn = -1;                                                          // Human always goes first
 }
 
 var anyOldBoard = function () {
@@ -88,33 +92,50 @@ var isADraw = function (board) {
 	return true;
 }
 
+var getMoves = function (board) {
+    var moves = [];
+    for (var i=0; i < 9; i++ ) {
+        if (board[i]==="") {
+            moves.push(i);
+        }
+    }
+    return moves; 
+}
+
+/*_________                       ________               ___.        _____  .___ 
+ /   _____/ ____   _____   ____   \______ \  __ __  _____\_ |__     /  _  \ |   |
+ \_____  \ /  _ \ /     \_/ __ \   |    |  \|  |  \/     \| __ \   /  /_\  \|   |
+ /        (  <_> )  Y Y  \  ___/   |    `   \  |  /  Y Y  \ \_\ \ /    |    \   |
+/_______  /\____/|__|_|  /\___  > /_______  /____/|__|_|  /___  / \____|__  /___|
+        \/             \/     \/          \/            \/    \/          \/     
+*/
+
 var score;
 
 var lookAhead = function (board, turn, depth) {
 
 	depth += 1;
-    moves = getMoves(board);
+    var moves = getMoves(board);
     if (depth === 1) {
     	var bestScore = -99999999999;
     	var bestMove = null;
-    	console.log("Setting bestmove to null");
     }
- 
-    for (var i=0; i<moves.length; i++) {
-		if (depth === 1) {
+    for (var i=0; i<moves.length; i++) { 
+
+		if (depth === 1) { 
 		 	score = 0;
 		}
         if (turn === 1) {   
-        	board[moves[i]] = "O";			// Make a move for the computer
+        	board[moves[i]] = "O";			          // Make a move for the computer
         	if (isWinningMove( board, moves[i] ) ) {
-        		score += 10;				// This is a good move for computer so add 10 to score
+        		score += 10;	         			  // This is a good move for computer
         	}  else {
         		lookAhead(board, -1, depth);
         	}
         } else {
-        	board[moves[i]] = "X";			// Make a move for the player
+        	board[moves[i]] = "X";			          // Make a move for the player
         	if (isWinningMove( board, moves[i] ) ) {
-        		score -= 10;				// This is a bad move for computer so subtract 10 from score
+        		score -= 10;	         			  // This is a bad move for computer     
         	} else {
         		lookAhead(board, 1, depth);
         	}		
@@ -122,28 +143,168 @@ var lookAhead = function (board, turn, depth) {
         if (depth === 1 && score  > bestScore) {
         	bestScore = score;
         	bestMove = moves[i];
-        	console.log("Setting best move to: " + bestMove + "  score = " + score + " bestscore = " + bestScore);
         }
-
         board[moves[i]]="";
     }
-
-
     if (depth === 1) {
-    	console.log("The best move is: " + bestMove);
 	    return bestMove;
 	}    
 }
 
-var getMoves = function (board) {
-	var moves = [];
-	for (var i=0; i < 9; i++ ) {
-		if (board[i]==="") {
-			moves.push(i);
-		}
-	}
-	console.log("moves " + moves);
-	return moves;
+/*
+ ____ ___     ___.                  __        ___.   .__          
+|    |   \____\_ |__   ____ _____ _/  |______ \_ |__ |  |   ____  
+|    |   /    \| __ \_/ __ \\__  \\   __\__  \ | __ \|  | _/ __ \ 
+|    |  /   |  \ \_\ \  ___/ / __ \|  |  / __ \| \_\ \  |_\  ___/ 
+|______/|___|  /___  /\___  >____  /__| (____  /___  /____/\___  >
+             \/    \/     \/     \/          \/    \/          \/ 
+_________                               __                
+\_   ___ \  ____   _____ ______  __ ___/  |_  ___________ 
+/    \  \/ /  _ \ /     \\____ \|  |  \   __\/ __ \_  __ \
+\     \___(  <_> )  Y Y  \  |_> >  |  /|  | \  ___/|  | \/
+ \______  /\____/|__|_|  /   __/|____/ |__|  \___  >__|   
+        \/             \/|__|                    \/       
+
+A player can play perfect tic-tac-toe if they choose the move with the highest priority in the following table.
+
+1) Win: If you have two in a row, play the third to get three in a row.
+
+2) Block: If the opponent has two in a row, play the third to block them.
+
+3) Fork: Create an opportunity where you can win in two ways.
+
+4) Block Opponent's Fork:
+
+    Option 1: Create two in a row to force the opponent into defending, as long as it doesn't result in them creating a fork or winning. For example, if "X" has a corner, "O" has the center, and "X" has the opposite corner as well, "O" must not play a corner in order to win. (Playing a corner in this scenario creates a fork for "X" to win.)
+
+    Option 2: If there is a configuration where the opponent can fork, block that fork.
+
+5) Center: Play the center.
+
+6) Opposite Corner: If the opponent is in the corner, play the opposite corner.
+
+7) Empty Corner: Play an empty corner.
+
+8) Empty Side: Play an empty side.
+*/
+
+
+var perfectMove = function(board) {
+
+    var moves = getMoves(board);
+
+    // 1. Check for an immediate win
+    for (var i=0; i<moves.length; i++) { 
+        board[moves[i]] = "O";
+        var isWinMove = isWinningMove(board, moves[i]);
+        board[moves[i]] = ""; 
+        if (isWinMove) {    
+            return moves[i];       
+        }
+    }
+
+    // 2. Check for a block by placing opponents piece then checking for a win
+    for (var i=0; i<moves.length; i++) { 
+        board[moves[i]] = "X";
+        var isWinMove = isWinningMove(board, moves[i]);
+        board[moves[i]] = ""; 
+        if (isWinMove) {    
+            return moves[i];       
+        }
+    }
+
+    // 3. Create a fork
+    for (var i=0; i<moves.length; i++) { 
+        board[moves[i]] = "O";
+        var winMove = isForked(board, moves[i])
+        board[moves[i]] = ""; 
+        if (winMove) {    
+            return moves[i];       
+        }
+    }
+
+    // 4. option1. Special Case.
+    // if moves.count = 8 and X has a corner then
+    //    Play the opposite corner
+    if (moves.length === 8){
+        if (board[0] === "X") {
+            return 8;
+        } else if (board[2] === "X") {
+            return 6;
+        } else if (board[6] === "X") {
+            return 2;
+        } else if (board[8] === "X") {
+            return 0;
+        }       
+    }
+
+    // 4. option2. Block a fork by playing opponents piece then checking for a fork
+    for (var i=0; i<moves.length; i++) { 
+        board[moves[i]] = "X";
+        var winMove = isForked(board, moves[i])
+        board[moves[i]] = ""; 
+        if (winMove) {    
+            return moves[i];       
+        }
+    }
+
+    // 5. Play the center
+    if (board[4] === "") {
+        return 4;
+    }
+
+    // 6. Play an opposite corner
+    if (board[0] === "" && board[8] === "X") {
+        return 0;
+    } else if (board[0] === "X" && board[8] === "") {
+        return 8;
+    } else if (board[2] === "" && board[6] === "X") {
+        return 2;
+    } else if (board[2] === "X" && board[6] === "") {
+        return 6;
+    }
+
+    // 7. Play an empty corner
+    if (board[0] === "") {
+        return 0;
+    } else if (board[2] === "") {
+        return 2;
+    } else if (board[6] === "") {
+        return 6;
+    } else if (board[8] === "") {
+        return 8;
+    }
+
+    // 8. Play an empty side
+    if (board[1] === "") {
+        return 1;
+    } else if (board[3] === "") {
+        return 3;
+    } else if (board[5] === "") {
+        return 5;
+    } else if (board[7] === "") {
+        return 7;
+    }
+
+}
+
+var isForked = function (board, lastMove) {
+    // If there are two of more ways the player can immediately win then there is a fork 
+    var player = board[lastMove];
+    var moves = getMoves(board);
+    var winMoves = 0;
+    for (var i = 0; i < moves.length; i++) {
+        board[moves[i]] = player;
+        if (isWinningMove(board,moves[i])) {
+            winMoves += 1;
+        }
+        board[moves[i]] = "";
+    }
+    if (winMoves > 1) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
