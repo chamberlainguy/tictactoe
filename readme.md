@@ -9,7 +9,7 @@ When playing against another human opponent each player takes turn clicking on a
 In 'dumb' computer mode the computer uses a simmple recursive algorythm to look ahead from each move possibility. 
 
 ## Playing against 'unbeatable' computer.
-In dumb computer mode the omputer follows these steps as seen on [https://en.wikipedia.org/wiki/Tic-tac-toe]. 
+In dumb computer mode the computer follows these steps as seen on [https://en.wikipedia.org/wiki/Tic-tac-toe]. 
 A algorythm plays a perfect tic-tac-toe game by choosing the move with the highest priority in the following table.
 
 1) Win: If you have two in a row, play the third to get three in a row.
