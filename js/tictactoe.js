@@ -1,4 +1,11 @@
-    
+ /*  
+___________.__         ___________               ___________            
+\__    ___/|__| ____   \__    ___/____    ____   \__    ___/___   ____  
+  |    |   |  |/ ___\    |    |  \__  \ _/ ___\    |    | /  _ \_/ __ \ 
+  |    |   |  \  \___    |    |   / __ \\  \___    |    |(  <_> )  ___/ 
+  |____|   |__|\___  >   |____|  (____  /\___  >   |____| \____/ \___  >
+                   \/                 \/     \/                      \/ 
+*/
 
 var turn = -1;                                                          // Human always goes first with an X
 var theBoard;
@@ -223,19 +230,15 @@ var perfectMove = function(board) {
         }
     }
 
-    // 4. option1. Special Case.
-    // if moves.count = 8 and X has a corner then
-    //    Play the opposite corner
-    if (moves.length === 8){
-        if (board[0] === "X") {
-            return 8;
-        } else if (board[2] === "X") {
-            return 6;
-        } else if (board[6] === "X") {
-            return 2;
-        } else if (board[8] === "X") {
-            return 0;
-        }       
+    // 4. Option1. Special case. 
+    // prevent double fork by forcing opponent into defending
+    if (moves.length === 6) {
+        if (board[0] === "X" || board[8] === "X") {
+            return 1;
+        }
+        if (board[2] === "X" || board[6] === "X") {
+            return 7;
+        }
     }
 
     // 4. option2. Block a fork by playing opponents piece then checking for a fork
@@ -248,7 +251,7 @@ var perfectMove = function(board) {
         }
     }
 
-    // 5. Play the center
+    // 5. Play the center if it's available
     if (board[4] === "") {
         return 4;
     }
@@ -285,7 +288,6 @@ var perfectMove = function(board) {
     } else if (board[7] === "") {
         return 7;
     }
-
 }
 
 var isForked = function (board, lastMove) {
@@ -306,7 +308,4 @@ var isForked = function (board, lastMove) {
         return false;
     }
 }
-
-
-
 
