@@ -3,9 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Tic Tac Toe</title>
-	<link rel="stylesheet" type="text/css" href="css/tictactoe.css">
+	<link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+	<link href="css/tictactoe.css" rel="stylesheet" type="text/css">
 </head>
 <body onload="makeBoard();">
+
+	<h1>Tic Tac Toe</h1>
 
 	<form name=board onsubmit="return false;">
 
@@ -28,9 +31,9 @@
 		<div id="opponent">
 			Choose Opponent:
 			<select name=opponent onchange="newGame()">
+				<option value=unbeatableAI>Unbeatable Computer
 				<option value=human>Human
 				<option value=dumbAI>Dumb Computer
-				<option value=unbeatableAI>Unbeatable Computer
 			</select>
 		</div>
 

@@ -1,19 +1,27 @@
 body {
- color:black;
- background-color:white;
- font-family:Tahoma,Verdana,Helvetica,Arial,sans-serif;
+ 	color:black;
+ 	background-color:white;
+ 	font-family:Tahoma,Verdana,Helvetica,Arial,sans-serif;
+}
+h1 {
+	font-family: 'Indie Flower', cursive;
+	font-size: 3cm;
+	margin-top: 0;
+	margin-bottom: .5cm;
 }
 .square {
- background-color: blue;
- color: white;
- font-size: 3cm;
- font-family:Courier New, Courier, monospaced;
- font-weight: bold;
- width: 3cm;
- vertical-align: bottom;
+ 	background-color: white;
+ 	color: blue;
+ 	font-size: 3cm;
+ 	font-family:Courier New, Courier, monospaced;
+ 	font-weight: bold;
+ 	width: 3cm;
+ 	vertical-align: bottom;
+ 	border:thin black ridge;
 }
 .board {
- border:thin black ridge;
- background-color: blue;
- margin-right: 1cm;
+ 	border:thin black ridge;
+ 	background-color: white;
+ 	margin-left: 2cm;
+ 	margin-right: .5cm;
 }
