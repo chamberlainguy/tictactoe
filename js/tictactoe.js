@@ -217,31 +217,28 @@ var perfectMove = function(board) {
     // 1. Check for an immediate win
     for (var i=0; i<moves.length; i++) { 
         board[moves[i]] = "O";
-        var isWinMove = isWinningMove(board, moves[i]);
-        board[moves[i]] = ""; 
-        if (isWinMove) {    
+        if ( isWinningMove(board, moves[i]) ) {    
             return moves[i];       
         }
+        board[moves[i]] = "";
     }
 
     // 2. Check for a block by placing opponents piece then checking for a win
     for (var i=0; i<moves.length; i++) { 
         board[moves[i]] = "X";
-        var isWinMove = isWinningMove(board, moves[i]);
-        board[moves[i]] = ""; 
-        if (isWinMove) {    
+        if ( isWinningMove(board, moves[i]) ) {    
             return moves[i];       
         }
+        board[moves[i]] = "";
     }
 
     // 3. Create a fork
     for (var i=0; i<moves.length; i++) { 
         board[moves[i]] = "O";
-        var winMove = isForked(board, moves[i])
-        board[moves[i]] = ""; 
-        if (winMove) {    
+        if ( isForked(board, moves[i]) ) {    
             return moves[i];       
         }
+        board[moves[i]] = "";
     }
 
     // 4. Option1. Special case. 
@@ -258,11 +255,10 @@ var perfectMove = function(board) {
     // 4. option2. Block a fork by playing opponents piece then checking for a fork
     for (var i=0; i<moves.length; i++) { 
         board[moves[i]] = "X";
-        var winMove = isForked(board, moves[i])
-        board[moves[i]] = ""; 
-        if (winMove) {    
+        if ( isForked(board, moves[i]) ) {    
             return moves[i];       
         }
+        board[moves[i]] = "";
     }
 
     // 5. Play the center if it's available
