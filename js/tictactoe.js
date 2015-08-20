@@ -145,20 +145,23 @@ var lookAhead = function (board, turn, depth) {
             outcomeCount = 0;
 		}
         if (turn === 1) {   
-        	board[moves[i]] = "O";			          // Make a move for the computer
+        	board[moves[i]] = "O";			                  // Make a move for the computer
         	if ( isWinningMove( board, moves[i]) ) {
-        		score += 10;          	              // This is a good move for computer
-                outcomeCount++;      
-            }  
+        		score += 10 - depth;          	              // This is a good move for computer
+                outcomeCount++; 
+            } else { 
+                lookAhead(board, -1, depth);
+            }   
         } else {
-        	board[moves[i]] = "X";			          // Make a move for the player
+        	board[moves[i]] = "X";			                  // Make a move for the player
         	if ( isWinningMove( board, moves[i]) ) {
-        		score -= 10;          	         	  // This is a bad move for computer     
+        		score -= 10 - depth;          	         	  // This is a bad move for computer     
                 outcomeCount++;    
-        	}	
+            } else {	
+                lookAhead(board, 1, depth);
+            }    
         }
-        lookAhead(board, turn * -1, depth);
-        if (depth === 1 && score / outcomeCount > bestScore) {
+        if (depth === 1 && (score / outcomeCount) > bestScore) {
         	bestScore = score / outcomeCount;         
             bestMove = moves[i];
         }
