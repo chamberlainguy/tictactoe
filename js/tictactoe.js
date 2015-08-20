@@ -27,14 +27,15 @@ var makeBoard = function (){
 }
 
 var move = function (square){
-
     if (square.value == ""){
     	if (turn === -1) {
     		square.value = "X";
     	} else {
     		square.value = "O";	
     	}
-    	if (gameOver(square.accessKey)) return; 
+    	if (gameOver(square.accessKey)) {
+            return;
+        } 
     	if (document.board.opponent.value === "human") {
     		turn *= -1;
     	} else {
@@ -128,39 +129,38 @@ var getMoves = function (board) {
         \/             \/     \/          \/            \/    \/          \/     
 */
 
-var score;
+var score, outcomeCount;
 
 var lookAhead = function (board, turn, depth) {
-
 	depth += 1;
     var moves = getMoves(board);
     if (depth === 1) {
-    	var bestScore = -99999999999;
+    	var bestScore = -99999999999.999;
     	var bestMove = null;
     }
     for (var i=0; i<moves.length; i++) { 
 
 		if (depth === 1) { 
-		 	score = 0;
+		 	score = 0.000;
+            outcomeCount = 0;
 		}
         if (turn === 1) {   
         	board[moves[i]] = "O";			          // Make a move for the computer
-        	if (isWinningMove( board, moves[i] ) ) {
-        		score += 10;	         			  // This is a good move for computer
-        	}  else {
-        		lookAhead(board, -1, depth);
-        	}
+        	if ( isWinningMove( board, moves[i]) ) {
+        		score += 10;          	              // This is a good move for computer
+                outcomeCount++;      
+            }  
         } else {
         	board[moves[i]] = "X";			          // Make a move for the player
-        	if (isWinningMove( board, moves[i] ) ) {
-        		score -= 10;	         			  // This is a bad move for computer     
-        	} else {
-        		lookAhead(board, 1, depth);
-        	}		
+        	if ( isWinningMove( board, moves[i]) ) {
+        		score -= 10;          	         	  // This is a bad move for computer     
+                outcomeCount++;    
+        	}	
         }
-        if (depth === 1 && score  > bestScore) {
-        	bestScore = score;
-        	bestMove = moves[i];
+        lookAhead(board, turn * -1, depth);
+        if (depth === 1 && score / outcomeCount > bestScore) {
+        	bestScore = score / outcomeCount;         
+            bestMove = moves[i];
         }
         board[moves[i]]="";
     }
@@ -299,6 +299,10 @@ var perfectMove = function(board) {
     } else if (board[7] === "") {
         return 7;
     }
+
+    // The above logic should always calculate a move so we should not get to here.
+    alert("Could not calculate next move");
+
 }
 
 var isForked = function (board, lastMove) {
